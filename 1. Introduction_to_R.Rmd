@@ -1,0 +1,153 @@
+---
+title: "Introduction to R"
+author: "Nicholas"
+date: "5/10/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Basic Arithemetic
+
+- Addition: `+`
+- Subtraction: `-`
+- Multiplication: `*`
+- Division: `/`
+- Exponentiation: `^`
+- Modulo: `%%`
+
+```{r}
+3+4
+```
+```{r}
+3-4
+```
+## Setting Variables
+```{r}
+my_var <- 4
+my_var
+```
+## Vectors
+- c stands for combine function
+- You can give a name (row headers) to the elements of a vector with the `names()` function:
+    - `names(roulette_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")`
+- You can select a value of a vector using [ ]
+    - selecting specific multiple vectors `poker_vector[c(1,5)]`
+    - selecting multiple vectors between certain values `poker_vector[c(1:5)]`
+    - selecting vectors using name `poker_vector[c(“name”)]`
+```{r}
+numeric_vector <- c(1, 2, 3)
+numeric_vector
+character_vector <- c("a", "b", "c")
+character_vector
+boolean_vector <- c(TRUE, FALSE, TRUE)
+boolean_vector
+boolean_vector[1]
+boolean_vector[c(1,2)]
+boolean_vector[c(1:2)]
+names(boolean_vector) <- c("one","two","three")
+boolean_vector[c("two")]
+```
+## Matrix
+- Create matrices using the `matrix()` function e.g. `matrix(1:9, byrow = TRUE, nrow = 3)`
+    - the first argument is the collection of elements that R will arrange into the rows and columns of the matrix. Here, we use `1:9` which is a shortcut for `c(1, 2, 3, 4, 5, 6, 7, 8, 9)`.
+    - The argument `byrow` indicates that the matrix is filled by the rows. If we want the matrix to be filled by the columns, we just place `byrow = FALSE`.
+    - The third argument `nrow` indicates that the matrix should have three rows.
+- Similar to vectors, you can add names for the rows and the columns of a matrix
+    - `colnames(star_wars_matrix) <- region <- c("US", "non-US")`
+    - `rownames(star_wars_matrix) <- title <- c("A New Hope", "The Empire Strikes Back", "Return of the Jedi")`
+- In R, the function [rowSums()](http://www.rdocumentation.org/packages/base/functions/colSums) conveniently calculates the totals for each row of a matrix. This function creates a new vector
+- In R, the function [colSums()](http://www.rdocumentation.org/packages/base/functions/colSums) conveniently calculates the totals for each column of a matrix. This function creates a new vector
+- You can add a column or multiple columns to a matrix with the [cbind()](http://www.rdocumentation.org/packages/base/functions/cbind) function, which merges matrices and/or vectors together by column
+- You can add a row or multiple rows to a matrix with the [rbind()](http://www.rdocumentation.org/packages/base/functions/cbind) function, which merges matrices and/or vectors together by column
+- Similar to vectors, you can use the square brackets `[ ]` to select one or multiple elements from a matrix. Whereas vectors have one dimension, matrices have two dimensions. You should therefore use a comma to separate the rows you want to select from the columns.
+    - `my_matrix[1,2]` selects the element at the first row and second column
+    - `my_matrix[1:3,2:4]` results in a matrix with the data on the rows 1, 2, 3 and columns 2, 3, 4
+    - `my_matrix[,1]` selects all elements of the first column.
+    - `my_matrix[1,]` selects all elements of the first row.
+- Similar to what you have learned with vectors, the standard operators like `+`, `-`, `/`, `*`, etc. work in an element-wise way on matrices in R.
+- You can also use functions with matrices like `mean()`
+```{r}
+my_matrix <- matrix(1:9, byrow = TRUE, nrow = 3)
+my_matrix
+rowSums(my_matrix)
+colSums(my_matrix)
+add_matrix <- matrix(9:1, byrow = TRUE, nrow = 3)
+big_matrix <- cbind(my_matrix, add_matrix)
+big_matrix
+big_matrix <- rbind(my_matrix, add_matrix)
+big_matrix
+my_matrix[1,2]
+my_matrix[1:3,1:2]
+my_matrix[,1]
+my_matrix[1,]
+my_matrix + add_matrix
+mean(my_matrix)
+```
+## Factors
+- The term **factor refers to a statistical data type used to store categorical variables**
+- The difference between a categorical variable and a continuous variable is that a **categorical variable** can belong to a **limited number of categories**
+    - There are **two types of categorical variables**: a **nominal categorical variable**
+    and an **ordinal categorical variables**
+        - **A nominal variable is a categorical variable without an implied order**. This means that it is impossible to say that 'one is worth more than the other.
+        - In contrast, **ordinal variables do have a natural ordering**.
+- A **continuous variable**, on the other hand, can correspond to an **infinite number of values**
+- **It is important that R knows whether it is dealing with a continuous or a categorical variable**, as the statistical models you will develop in the future treat both types differently.
+- **To create factors in R**, you make use of the function [factor()](http://www.rdocumentation.org/packages/base/functions/factor)
+    - First thing that you have to do is create a vector that contains all the observations that belong to a limited number of categories. For example, `sex_vector`contains the sex of 5 different individuals. The function [factor()](http://www.rdocumentation.org/packages/base/functions/factor) will encode the vector as a factor
+        - `sex_vector <- c("Male","Female","Female","Male","Male")`
+        - `factor_sex_vector <- factor(sex_vector)`
+- When you first get a dataset, you will often notice that it contains factors with specific factor levels. However, **sometimes you will want to change the names of these levels for clarity or other reasons**. R allows you to do this with the function [levels()](http://www.rdocumentation.org/packages/base/functions/levels)
+    - `levels(factor_vector) <- c("name1", "name2",...)`
+    - If you don't specify the levels of the factor when creating the vector, `R` will automatically assign them alphabetically.
+- [summary()](http://www.rdocumentation.org/packages/base/functions/summary) will give you a **quick overview of the contents of a variable**
+    - `summary(vector)` outputs the overall vector information
+    - `summary(factor)` outputs the summary of the number of values in each categorical data
+- **To provide order to a factor**
+    - `factor_speed_vector <- factor(speed_vector,ordered=TRUE,levels = c("slow","medium","fast"))`
+        - By setting the argument `ordered` to `TRUE` in the function [factor()](http://www.rdocumentation.org/packages/base/functions/factor) you indicate that the factor is ordered.
+        - With the argument `levels` you give the values of the factor in the correct order.
+    - You can then use operators such as `>` to check the order between 2 factor values
+```{r}
+sex_vector <- c("Male","Female","Female","Male","Male")
+factor_sex_vector <- factor(sex_vector)
+sex_vector
+factor_sex_vector
+levels(factor_sex_vector) <- c("Male","Female")
+sex_vector
+factor_sex_vector
+summary(sex_vector)
+summary(factor_sex_vector)
+speed_vector <- c("fast", "slow", "medium")
+factor_speed_vector <- factor(speed_vector,ordered=TRUE,levels = c("slow","medium","fast"))
+factor_speed_vector
+speed_vector
+```
+## Dataframes
+- **A data frame has the variables of a dataset as columns and the observations as rows.** This will be a familiar concept for those coming from different statistical software packages such as SAS or SPSS.
+- The function [head()](http://www.rdocumentation.org/packages/utils/functions/head) enables you to show the **first observations of a data frame**. Similarly, the function [tail()](http://www.rdocumentation.org/packages/utils/functions/head) prints out the **last observations in your dataset**.
+- The function [str()](http://www.rdocumentation.org/packages/utils/functions/str) shows you the **structure of your dataset**
+- You construct a data frame with the [data.frame()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/data.frame) function. As arguments, you pass the vectors
+- Similar to vectors and matrices, you select elements from a data frame with the help of square brackets `[ ]`
+    - `my_df[1,2]` selects the value at the first row and second column in `my_df`.
+    - `my_df[1:3,2:4]` selects rows 1, 2, 3 and columns 2, 3, 4 in `my_df`.
+    - `planets_df[1:3,"type"]` selects the column “type”
+    - `planets_df$diameter` selects the column “diameter” as a vector
+    - `planets_df[rings_vector,]` selects only rows which have the TRUE values for the row vector
+- `subset(planets_df,subset=diameter<1)`
+    - The first argument of [subset()](http://www.rdocumentation.org/packages/base/functions/subset) specifies the dataset for which you want a subset.
+    - By adding the second argument, you give R the necessary information and conditions to select the correct subset.
+- [order()](http://www.rdocumentation.org/packages/base/functions/order) is a function that gives you the ranked position of each element when it is applied on a variable
+    - we can use the output of `order(a)` to reshuffle `a` in ascending order where `a` is a vector
+    - You can also use the order function to sort a dataframe`planets_df[order(planets_df$diameter),]`
+    
+## Lists
+- A **list** in R is similar to your to-do list at work or school: the different items on that list most likely differ in length, characteristic, and type of activity that has to be done
+- A list in R allows you to gather a variety of objects under one name (that is, the name of the list) in an ordered way. These objects can be matrices, vectors, data frames, even other lists, etc. It is not even required that these objects are related to each other in any way.
+- To construct a list you use the function [list()](http://www.rdocumentation.org/packages/base/functions/list)
+    - `my_list <- list(my_vector,my_matrix,my_df)`
+    - `my_list <- list(vec=my_vector, mat=my_matrix,df= my_df)` use = to give names to items on your list
+    - `shining_list$actors` to call out a named list item
+    - `shining_list$actors[2]` to call out the second value on the named list item
