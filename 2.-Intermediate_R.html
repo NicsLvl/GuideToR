@@ -293,6 +293,271 @@ if (li&gt;15&amp; fb&gt;15) {
 sms</code></pre>
 <pre><code>## [1] 24</code></pre>
 </div>
+<div id="loops" class="section level2">
+<h2>Loops</h2>
+<pre class="r"><code># Initialize the speed variable
+speed &lt;- 64
+
+# Code the while loop
+while (speed&gt;30) {
+  print(&quot;Slow down!&quot;)
+  speed &lt;- speed -7
+}</code></pre>
+<pre><code>## [1] &quot;Slow down!&quot;
+## [1] &quot;Slow down!&quot;
+## [1] &quot;Slow down!&quot;
+## [1] &quot;Slow down!&quot;
+## [1] &quot;Slow down!&quot;</code></pre>
+<pre class="r"><code># Print out the speed variable
+speed</code></pre>
+<pre><code>## [1] 29</code></pre>
+<pre class="r"><code># Initialize the speed variable
+speed &lt;- 64
+
+# Extend/adapt the while loop
+while (speed &gt; 30) {
+  print(paste(&quot;Your speed is&quot;,speed))
+  if (speed&gt;48) {
+    print(&quot;Slow down big time!&quot;)
+    speed &lt;- speed -11
+  } else {
+    print(&quot;Slow down!&quot;)
+    speed &lt;- speed -6
+  }
+}</code></pre>
+<pre><code>## [1] &quot;Your speed is 64&quot;
+## [1] &quot;Slow down big time!&quot;
+## [1] &quot;Your speed is 53&quot;
+## [1] &quot;Slow down big time!&quot;
+## [1] &quot;Your speed is 42&quot;
+## [1] &quot;Slow down!&quot;
+## [1] &quot;Your speed is 36&quot;
+## [1] &quot;Slow down!&quot;</code></pre>
+<pre class="r"><code># Print out the speed variable
+speed</code></pre>
+<pre><code>## [1] 30</code></pre>
+<pre class="r"><code># Initialize the speed variable
+speed &lt;- 88
+
+while (speed &gt; 30) {
+  print(paste(&quot;Your speed is&quot;, speed))
+  
+  # Break the while loop when speed exceeds 80
+  if ( speed &gt; 80) {
+    break
+  }
+  
+  if (speed &gt; 48) {
+    print(&quot;Slow down big time!&quot;)
+    speed &lt;- speed - 11
+  } else {
+    print(&quot;Slow down!&quot;)
+    speed &lt;- speed - 6
+  }
+}</code></pre>
+<pre><code>## [1] &quot;Your speed is 88&quot;</code></pre>
+<pre class="r"><code># Initialize i as 1 
+i &lt;- 1
+
+# Code the while loop
+while (i &lt;= 10) {
+  print(3*i)
+  if (3*i%%8==0) {
+    break
+  }
+  i &lt;- i + 1
+}</code></pre>
+<pre><code>## [1] 3
+## [1] 6
+## [1] 9
+## [1] 12
+## [1] 15
+## [1] 18
+## [1] 21
+## [1] 24</code></pre>
+<pre class="r"><code># The linkedin vector has already been defined for you
+linkedin &lt;- c(16, 9, 13, 5, 2, 17, 14)
+
+# For Loop version 1
+for (i in linkedin) {print(i)}</code></pre>
+<pre><code>## [1] 16
+## [1] 9
+## [1] 13
+## [1] 5
+## [1] 2
+## [1] 17
+## [1] 14</code></pre>
+<pre class="r"><code># For Loop version 2
+for (i in 1:length(linkedin)) {print(linkedin[i])}</code></pre>
+<pre><code>## [1] 16
+## [1] 9
+## [1] 13
+## [1] 5
+## [1] 2
+## [1] 17
+## [1] 14</code></pre>
+<pre class="r"><code># The nyc list is already specified
+nyc &lt;- list(pop = 8405837, 
+            boroughs = c(&quot;Manhattan&quot;, &quot;Bronx&quot;, &quot;Brooklyn&quot;, &quot;Queens&quot;, &quot;Staten Island&quot;), 
+            capital = FALSE)
+
+# Loop version 1
+for (i in nyc){print(i)}</code></pre>
+<pre><code>## [1] 8405837
+## [1] &quot;Manhattan&quot;     &quot;Bronx&quot;         &quot;Brooklyn&quot;      &quot;Queens&quot;       
+## [5] &quot;Staten Island&quot;
+## [1] FALSE</code></pre>
+<pre class="r"><code># Loop version 2
+for (i in 1:length(nyc)){print(nyc[[i]])}</code></pre>
+<pre><code>## [1] 8405837
+## [1] &quot;Manhattan&quot;     &quot;Bronx&quot;         &quot;Brooklyn&quot;      &quot;Queens&quot;       
+## [5] &quot;Staten Island&quot;
+## [1] FALSE</code></pre>
+<pre class="r"><code>ttt &lt;- matrix(1:9,nrow=3,ncol=3)
+# define the double for loop
+for (i in 1:nrow(ttt)) {
+  for (j in 1:ncol(ttt)) {
+    print(paste(&quot;On row&quot;, i, &quot;and column&quot;, j, &quot;the board contains&quot;, ttt[i,j]))
+  }
+}</code></pre>
+<pre><code>## [1] &quot;On row 1 and column 1 the board contains 1&quot;
+## [1] &quot;On row 1 and column 2 the board contains 4&quot;
+## [1] &quot;On row 1 and column 3 the board contains 7&quot;
+## [1] &quot;On row 2 and column 1 the board contains 2&quot;
+## [1] &quot;On row 2 and column 2 the board contains 5&quot;
+## [1] &quot;On row 2 and column 3 the board contains 8&quot;
+## [1] &quot;On row 3 and column 1 the board contains 3&quot;
+## [1] &quot;On row 3 and column 2 the board contains 6&quot;
+## [1] &quot;On row 3 and column 3 the board contains 9&quot;</code></pre>
+<pre class="r"><code># The linkedin vector has already been defined for you
+linkedin &lt;- c(16, 9, 13, 5, 2, 17, 14)
+
+# Code the for loop with conditionals
+for (li in linkedin) {
+  if (li&gt;10) {print(&quot;You&#39;re popular!&quot;)} 
+  else {print(&quot;Be more visible!&quot;)}
+  
+   # Add if statement with break
+  if (li &gt; 16) {
+    print(&quot;This is ridiculous, I&#39;m outta here!&quot;)
+    break
+  }
+  
+  # Add if statement with next
+  if (li &lt; 5) {
+    print(&quot;This is too embarrassing!&quot;)
+    next
+  }
+  print(li)
+}</code></pre>
+<pre><code>## [1] &quot;You&#39;re popular!&quot;
+## [1] 16
+## [1] &quot;Be more visible!&quot;
+## [1] 9
+## [1] &quot;You&#39;re popular!&quot;
+## [1] 13
+## [1] &quot;Be more visible!&quot;
+## [1] 5
+## [1] &quot;Be more visible!&quot;
+## [1] &quot;This is too embarrassing!&quot;
+## [1] &quot;You&#39;re popular!&quot;
+## [1] &quot;This is ridiculous, I&#39;m outta here!&quot;</code></pre>
+</div>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<p>These are the extremely important functions when it comes down to R packages: - install.packages(), which as you can expect, installs a given package. - library() which loads packages, i.e. attaches them to the search list on your R workspace. - search(), to look at the currently attached packages and</p>
+<p>Consult the documentation on the mean() function: ?mean or help(mean). Inspect the arguments of the mean() function using the args() function. - The mean() function computes the arithmetic mean. - Function template: my_fun &lt;- function(arg1, arg2) {body} - Variables that are defined inside a function are not accessible outside that function.</p>
+<p>You can only load packages one at a time - library(data.table)/library(“data.table”) - require(rjson)</p>
+<pre class="r"><code># Defining a function with default arguments
+pow_two &lt;- function(x,print_info=TRUE) {
+  y &lt;- x ^ 2
+  if (print_info == TRUE)
+  {
+  print(paste(x, &quot;to the power two equals&quot;, y))}
+  return(y)
+}
+pow_two(22,print_info=FALSE)</code></pre>
+<pre><code>## [1] 484</code></pre>
+</div>
+<div id="lapply" class="section level2">
+<h2>lapply</h2>
+<p>To put it generally, lapply takes a vector or list X, and applies the function FUN to each of its members. If FUN requires additional arguments, you pass them after you’ve specified X and FUN (…). The output of lapply() is a list, the same length as X, where each element is the result of applying FUN on the corresponding element of X. You can use lapply() on your own functions as well. - lapply(X, FUN, …) - essentially a for loop - you can use so-called anonymous functions in R by putting it inside lapply</p>
+<pre class="r"><code># Code from previous exercise:
+pioneers &lt;- c(&quot;GAUSS:1777&quot;, &quot;BAYES:1702&quot;, &quot;PASCAL:1623&quot;, &quot;PEARSON:1857&quot;)
+split &lt;- strsplit(pioneers, split = &quot;:&quot;)
+split_low &lt;- lapply(split, tolower)
+
+# Write function select_first()
+select_first &lt;- function(x) {
+  x[1]
+}
+
+# Apply select_first() over split_low: names
+names &lt;- lapply(split_low,select_first)
+print(names)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;gauss&quot;
+## 
+## [[2]]
+## [1] &quot;bayes&quot;
+## 
+## [[3]]
+## [1] &quot;pascal&quot;
+## 
+## [[4]]
+## [1] &quot;pearson&quot;</code></pre>
+<pre class="r"><code># Write function select_second()
+select_second&lt;-function(x) {
+  x[2]
+}
+
+# Apply select_second() over split_low: years
+years &lt;- lapply(split_low,select_second)
+print(years)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;1777&quot;
+## 
+## [[2]]
+## [1] &quot;1702&quot;
+## 
+## [[3]]
+## [1] &quot;1623&quot;
+## 
+## [[4]]
+## [1] &quot;1857&quot;</code></pre>
+<pre class="r"><code># Transform: use anonymous function inside lapply
+names &lt;- lapply(split_low, function(x) {
+  x[1]
+})
+print(names)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;gauss&quot;
+## 
+## [[2]]
+## [1] &quot;bayes&quot;
+## 
+## [[3]]
+## [1] &quot;pascal&quot;
+## 
+## [[4]]
+## [1] &quot;pearson&quot;</code></pre>
+<pre class="r"><code># Transform: use anonymous function inside lapply
+years &lt;- lapply(split_low, function(x) {
+  x[2]
+})
+print(years)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;1777&quot;
+## 
+## [[2]]
+## [1] &quot;1702&quot;
+## 
+## [[3]]
+## [1] &quot;1623&quot;
+## 
+## [[4]]
+## [1] &quot;1857&quot;</code></pre>
+</div>
 
 
 
