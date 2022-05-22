@@ -62,7 +62,19 @@ library(dplyr)
 
 ### Line Plots
 - ggplot(by_year,aes(x=year,y=medianGdpPercap),expand_limits(y=0)) + geom_line()
-  
+- ggplot(by_year_continent,aes(x=year,y=medianGdpPercap,color=continent),expand_limits(y=0))+geom_line()
+
+### Bar Charts
+- ggplot(by_continent, aes(x=continent,y=medianGdpPercap))+geom_col()
+
+### Histogram
+- ggplot(gapminder_1952, aes(x = pop_by_mil)) + geom_histogram(bins = 50)
+- ggplot(gapminder_1952, aes(x = pop)) + geom_histogram(bins = 50) + scale_x_log10()
+
+### Box Plots
+- ggplot(gapminder_1952, aes(x = continent, y= gdpPercap)) + geom_boxplot() + scale_y_log10() +
+  ggtitle("Comparing GDP per capita across continents")
+
 ## Grouping and Summarizing
 summarize turns many rows into 1
 1. medianLifeExp <- gapminder %>% summarize(median(lifeExp))
