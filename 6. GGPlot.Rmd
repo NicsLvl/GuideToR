@@ -1,0 +1,172 @@
+---
+title: "Introduction to R"
+author: "Nicholas"
+date: "5/10/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## GGPlot
+
+Factor explicitly tells ggplot2 that cyl is a categorical variable.
+  # Change the command below so that cyl is treated as factor
+ggplot(mtcars, aes(factor(cyl), mpg)) +
+  geom_point()
+
+You'll use two common geom layer functions:
+1. geom_point() adds points (as in a scatter plot).
+2. geom_smooth() adds a smooth trend curve.
+
+If you have multiple geoms, then mapping an aesthetic to data variable inside the call to ggplot() will change all the geoms. It is also possible to make changes to individual geoms by passing arguments to the geom_*() functions.
+  # Make the points 40% opaque
+ggplot(diamonds, aes(carat, price, color = clarity)) +
+  geom_point(alpha=0.4) +
+  geom_smooth()
+  
+Plots can be saved as variables, which can be added two later on using the + operator. This is really useful if you want to make multiple related plots from a common 
+
+plt_price_vs_carat <- ggplot(diamonds, aes(carat, price))
+plt_price_vs_carat_by_clarity <- plt_price_vs_carat + geom_point(aes(color=clarity))
+
+These are the aesthetics you can consider within aes(): x, y, color, fill, size, alpha, labels and shape.
+Many of the aesthetics can accept either continuous or categorical variables. Label and shape are only applicable to categorical data.
+  # Base layer
+plt_mpg_vs_wt <- ggplot(mtcars, aes(wt, mpg))
+
+  # Map fcyl to alpha, not size
+plt_mpg_vs_wt +
+  geom_point(aes(size = fcyl))
+  
+  # Use text layer and map fcyl to label
+plt_mpg_vs_wt +
+  geom_text(aes(label = fcyl))
+  
+You can specify colors in R using hex codes: a hash followed by two hexadecimal numbers each for red, green, and blue ("#RRGGBB"). Hexadecimal is base-16 counting. You have 0 to 9, and A representing 10 up to F representing 15. Pairs of hexadecimal numbers give you a range from 0 to 255. "#000000" is "black" (no color), "#FFFFFF" means "white", and `"#00FFFF" is cyan (mixed green and blue).
+
+labs() to set the x- and y-axis labels. It takes strings for each argument.
+
+scale_color_manual() defines properties of the color scale (i.e. axis). The first argument sets the legend title. values is a named vector of colors to use.
+
+### Scatter Plots
+- Alpha blending (i.e. adding transparency) is recommended when using solid shapes. Alternatively, you can use opaque, hollow shapes.
+- Small points are suitable for large datasets with regions of high density (lots of overlapping).
+
+When aligning values on a single axis when one axis is continuous and the other is categorical, it can be overcome with some form of jittering.
+
+  # Plot base
+plt_mpg_vs_fcyl_by_fam <- ggplot(mtcars, aes(fcyl, mpg, color = fam))
+
+  # Swap for jitter layer with width 0.1
++ geom_jitter(alpha = 0.5, width = 0.1)
+  
+  # Set the position to jitter
++ geom_point(alpha = 0.5,position="jitter")
+
+  # Use a jitter position function with width 0.1
++ geom_point(alpha = 0.5,position=position_jitter(width=0.1))
+
+### Histograms
+
+geom_histogram(), a special case of geom_bar(), has a position argument that can take on the following values:
+
+stack (the default): Bars for different groups are stacked on top of each other.
+dodge: Bars for different groups are placed side by side.
+fill: Bars for different groups are shown as proportions.
+identity: Plot the values as they appear in the dataset.
+
+datacamp_light_blue <- "#51A8C9"
+
+ggplot(mtcars, aes(mpg, ..density..)) +
+  # Set the fill color to datacamp_light_blue
+  geom_histogram(binwidth = 1, fill=datacamp_light_blue)
+
+You can customize bar plots further by adjusting the dodging so that your bars partially overlap each other. Instead of using position = "dodge", you're going to use position_dodge(). The reason you want to use position_dodge() (and position_jitter()) is to specify how much dodging (or jittering) you want.
+  ggplot(mtcars, aes(cyl, fill = fam)) +
+  # Set the transparency to 0.6
+  geom_bar(position = position_dodge(width = 0.2),alpha=0.6)
+
+### Legends
+To change stylistic elements of a plot, call theme() and set plot properties to a new value.
+
+p + theme(legend.position = new_value)
+Here, the new value can be
+- "top", "bottom", "left", or "right'": place it at that side of the plot.
+- "none": don't draw it.
+- c(x, y): c(0, 0) means the bottom-left and c(1, 1) means the top-right.
+
+Line elements in the plot such as axes and gridlines have a color, a thickness (size), and a line type (solid line, dashed, or dotted). To set the style of a line, you use element_line(). For example, to make the axis lines into red, dashed lines, you would use the following.
+p + theme(axis.line = element_line(color = "red", linetype = "dashed"))
+
+plt_prop_unemployed_over_time +
+  theme(
+    rect = element_rect(fill = "grey92"),
+    legend.key = element_rect(color = NA),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank(),
+    panel.grid.major.y = element_line(
+      color = "white",
+      size = 0.5,
+      linetype = "dotted"
+    ),
+    # Set the axis text color to grey25
+    axis.text = element_text(color = "grey25"),
+    # Set the plot title font face to italic and font size to 16
+    plot.title = element_text(face = "italic", size = 16)
+  )
+  
+Whitespace means all the non-visible margins and spacing in the plot.
+
+To set a single whitespace value, use unit(x, unit), where x is the amount and unit is the unit of measure.
+
+Borders require you to set 4 positions, so use margin(top, right, bottom, left, unit). To remember the margin order, think TRouBLe.
+
+The default unit is "pt" (points), which scales well with text. Other options include "cm", "in" (inches) and "lines" (of text).
+
+plt_mpg_vs_wt_by_cyl +
+  theme(
+    # Set the axis tick length to 2 lines
+    axis.ticks.length=unit(2,"lines")
+  
+  # Set the legend key size to 3 centimeters
+    legend.key.size=unit(3,"cm")
+    
+  # Set the legend margin to (20, 30, 40, 50) points
+    legend.margin = margin(20, 30, 40, 50, "pt")
+    
+  # Set the plot margin to (10, 30, 50, 70) millimeters
+    plot.margin = margin(10, 30, 50, 70, "mm")
+  )
+  
+In addition to making your own themes, there are several out-of-the-box solutions that may save you lots of time.
+
+theme_gray() is the default.
+theme_bw() is useful when you use transparency.
+theme_classic() is more traditional.
+theme_void() removes everything but the data.
+
+Reusing a theme across many plots helps to provide a consistent style. You have several options for this.
+1. Assign the theme to a variable, and add it to each plot.
+
+  # Theme layer saved as an object, theme_recession
+theme_recession <- theme(
+  rect = element_rect(fill = "grey92"),
+  legend.key = element_rect(color = NA),
+  axis.ticks = element_blank(),
+  panel.grid = element_blank(),
+  panel.grid.major.y = element_line(color = "white", size = 0.5, linetype = "dotted"),
+  axis.text = element_text(color = "grey25"),
+  plot.title = element_text(face = "italic", size = 16),
+  legend.position = c(0.6, 0.1)
+)
+
+  # Combine the Tufte theme with theme_recession
+theme_tufte_recession <- theme_tufte() + theme_recession
+
+  # Add the recession theme to the plot
+plt_prop_unemployed_over_time + theme_tufte_recession
+
+2. Set your theme as the default using theme_set().
+  # Set theme_tufte_recession as the default theme
+theme_set(theme_tufte_recession)
